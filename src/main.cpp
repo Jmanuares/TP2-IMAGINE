@@ -40,6 +40,8 @@ int main(int argc , char* argv[]){
 		plain(img, (unsigned char)p1);
 	if (filter == "shades")
 		shades(img, (unsigned char)p1);
+	if (filter == "brightness")
+		brightness(img, p1);
 	
    	clock_gettime(CLOCK_REALTIME, &stop);
 

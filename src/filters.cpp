@@ -29,7 +29,29 @@ void plain(ppm& img, unsigned char c)
 
 
 void contrast(ppm& img, float contrast);
-void brightness(ppm& img, float b, int start, int end);
+void brightness(ppm& img, float brillo){
+	int r; 
+	int g;
+	int b;
+	if (brillo >= 1 || brillo <= -1)
+	{
+		cout << "El brillo debe estar entre -1 y 1" << endl;
+	}else{
+		for(int i = 0; i < img.height; i++){
+			for(int j = 0; j < img.width; j++){		
+				r = img.getPixel(i, j).r; 
+				g = img.getPixel(i, j).g; 
+				b = img.getPixel(i, j).b;
+				r = truncate(r + 255*brillo);
+				g = truncate(g + 255*brillo); 
+				b = truncate(b + 255*brillo);
+
+				img.setPixel(i, j, pixel(r,g,b));
+			}
+		}
+	}
+	
+}
 void shades(ppm& img, unsigned char shades){
 	int r; 
 	int g;
