@@ -24,11 +24,11 @@ int main(int argc , char* argv[]){
 		return 0; 
 	}
 	
-	string filter = string(argv[1]);
-	unsigned int n = atoi(argv[2]);
-	float p1 = atof(argv[3]);
-	string img1(argv[4]);
-	string out = string(argv[5]);
+	string filter = string(argv[1]); // funcion del filtro
+	unsigned int n = atoi(argv[2]); // threads
+	float p1 = atof(argv[3]); // variable
+	string img1(argv[4]); // ruta a la img
+	string out = string(argv[5]); // ruta para guardar img (out)
 	
 	ppm img(img1);
 	
@@ -38,6 +38,8 @@ int main(int argc , char* argv[]){
 
 	if (filter == "plain")
 		plain(img, (unsigned char)p1);
+	if (filter == "shades")
+		shades(img, (unsigned char)p1);
 	
    	clock_gettime(CLOCK_REALTIME, &stop);
 
