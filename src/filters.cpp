@@ -28,7 +28,31 @@ void plain(ppm& img, unsigned char c)
 }
 
 
-void contrast(ppm& img, float contrast);
+void contrast(ppm& img, float contrast){
+	int r; 
+	int g;
+	int b;
+
+	if (contrast >= 255 || contrast <= -255)
+	{
+		cout << "El contraste debe estar entre -255 y 255" << endl;
+	
+	}else{
+		int f =	(int)((259*(contrast+255))/(255*(259-contrast)));
+		for(int i = 0; i < img.height; i++){
+			for(int j = 0; j < img.width; j++){		
+				r = img.getPixel(i, j).r; 
+				g = img.getPixel(i, j).g; 
+				b = img.getPixel(i, j).b;	
+				r = truncate(f*(r - 128) + 128);
+				g = truncate(f*(g - 128) + 128); 
+				b = truncate(f*(b - 128) + 128);
+
+				img.setPixel(i, j, pixel(r,g,b));
+			}
+		}
+	}
+}
 void brightness(ppm& img, float brillo){
 	int r; 
 	int g;
