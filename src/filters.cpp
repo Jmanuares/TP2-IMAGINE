@@ -29,9 +29,7 @@ void plain(ppm& img, unsigned char c)
 
 
 void contrast(ppm& img, float contrast){
-	int r; 
-	int g;
-	int b;
+	int r,g,b
 
 	if (contrast >= 255 || contrast <= -255)
 	{
@@ -54,9 +52,7 @@ void contrast(ppm& img, float contrast){
 	}
 }
 void brightness(ppm& img, float brillo){
-	int r; 
-	int g;
-	int b;
+	int r,g,b
 	if (brillo >= 1 || brillo <= -1)
 	{
 		cout << "El brillo debe estar entre -1 y 1" << endl;
@@ -77,12 +73,8 @@ void brightness(ppm& img, float brillo){
 	
 }
 void shades(ppm& img, unsigned char shades){
-	int r; 
-	int g;
-	int b;
+	int r,g,b,ge,gris,
 	int range = (int)(255/(int(shades)-1));
-	int ge;
-	int gris;
 	
 	for(int i = 0; i < img.height; i++){
 		for(int j = 0; j < img.width; j++){		
@@ -99,5 +91,19 @@ void shades(ppm& img, unsigned char shades){
 
 
 
-void zoom(ppm &img, ppm &img_zoomed, int n);
-void edgeDetection(ppm &img, ppm &img_target);
+void zoom(ppm &img, ppm &img_zoomed, int n){
+	for(int i = 0; i < img.height; i++){
+		for(int j = 0; j < img.width; j++){		
+			
+		}
+	}
+}
+	
+void edgeDetection(ppm &img, ppm &img_target){
+	for(int i = 0; i < img.height; i++){
+		for(int j = 0; j < img.width; j++){		
+			
+		}
+	}
+	
+}
