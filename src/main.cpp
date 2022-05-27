@@ -44,6 +44,8 @@ int main(int argc , char* argv[]){
 		brightness(img, p1);
 	else if (filter == "contrast")
 		contrast(img, p1);
+	else if (filter == "edgeDetection")
+		edgeDetection(img, img);
 	else
 		cout << "No se selecciono filtro" << endl;
 	
