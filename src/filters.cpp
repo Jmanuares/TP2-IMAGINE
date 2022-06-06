@@ -91,11 +91,20 @@ void shades(ppm& img, unsigned char shades){
 
 
 void zoom(ppm &img, ppm &img_zoomed, int n){
-	for(int i = 0; i < img.height; i++){
-		for(int j = 0; j < img.width; j++){		
-			//pass
+	pixel p;
+	for(int a = 0; a < img.height; a++){
+		for(int b = 1; b < img.width; b++){
+		
+			for(int i = 0; i < n; i++){
+				for(int j = 0; j < n; j++){
+					p = img.getPixel(a,b);
+					img_zoomed.setPixel((a*n) + i, (b*n) + j, p);
+				}
+			}
 		}
 	}
+	img = img_zoomed;
+	return;
 }
 
 

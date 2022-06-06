@@ -48,7 +48,7 @@ int main(int argc , char* argv[]){
 	else if (filter == "edgeDetection")
 		edgeDetection(img, img);
 	else if (filter == "zoom")
-		zoom(img, img, p1);
+		zoom(img, img, (unsigned char)p1);
 	else if (filter == "crop")
 		crop(img, (unsigned char)p1,(unsigned char)p2);
 	else
