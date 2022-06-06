@@ -21,7 +21,7 @@ void boxBlur(ppm &img);
 void zoom(ppm &img, ppm &img_zoomed, int n);
 void edgeDetection(ppm &img, ppm &img_target);
 void plain(ppm &img, unsigned char c);
-void crop(ppm &img, unsigned char k, unsigned char k);
+void crop(ppm &img, unsigned char k, unsigned char t);
 // MULTI-THREAD FILTERS
 
 #endif

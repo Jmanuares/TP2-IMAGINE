@@ -99,7 +99,7 @@ void zoom(ppm &img, ppm &img_zoomed, int n){
 }
 
 
-void crop(ppm &img, unsigned char k, unsigned char k){
+void crop(ppm &img, unsigned char k, unsigned char t){
 	ppm img_target = ppm(img.width - t, img.height - k);
 	for (size_t i = k; i < img.height; i++)
 	{
