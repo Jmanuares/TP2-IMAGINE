@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include <math.h>       /* sqrt */
+#include <math.h>   
 #include <vector>
 #include "filters.h"
 #include <thread>  
@@ -97,6 +97,20 @@ void zoom(ppm &img, ppm &img_zoomed, int n){
 		}
 	}
 }
+
+
+void crop(ppm &img, unsigned char k, unsigned char k){
+	ppm img_target = ppm(img.width - t, img.height - k);
+	for (size_t i = k; i < img.height; i++)
+	{
+		for (size_t j = t; j < img.width; j++)
+		{
+			img_target.setPixel(i - k, j - t, img.getPixel(i, j));
+		}
+	}
+	img = img_target;
+
+};
 	
 void edgeDetection(ppm &img, ppm &img_target){
 	pixel p0,p1,p2,p3,p4,p5,p6,p7,p8,p9;

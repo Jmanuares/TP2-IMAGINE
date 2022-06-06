@@ -27,6 +27,7 @@ int main(int argc , char* argv[]){
 	string filter = string(argv[1]); // funcion del filtro
 	unsigned int n = atoi(argv[2]); // threads
 	float p1 = atof(argv[3]); // variable
+	float p2 = atof(argv[3]); // segunda variable
 	string img1(argv[4]); // ruta a la img
 	string out = string(argv[5]); // ruta para guardar img (out)
 	
@@ -46,6 +47,10 @@ int main(int argc , char* argv[]){
 		contrast(img, p1);
 	else if (filter == "edgeDetection")
 		edgeDetection(img, img);
+	else if (filter == "zoom")
+		zoom(img, img);
+	else if (filter == "crop")
+		crop(img, (unsigned char)p1,(unsigned char)p2);
 	else
 		cout << "No se selecciono filtro" << endl;
 	
