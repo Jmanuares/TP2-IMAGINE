@@ -91,21 +91,23 @@ void shades(ppm& img, unsigned char shades){
 
 
 void zoom(ppm &img, ppm &img_zoomed, int n){
-	pixel p;
-	for(int a = 0; a < img.height; a++){
-		for(int b = 1; b < img.width; b++){
-		
-			for(int i = 0; i < n; i++){
-				for(int j = 0; j < n; j++){
-					p = img.getPixel(a,b);
-					img_zoomed.setPixel((a*n) + i, (b*n) + j, p);
+	int r,g,b;
+	for(int i = 0; i < img.height / n; i++){
+		for(int j = 0; j < img.width / n; j++){	
+			r =img.getPixel(i,j).r;
+			g =img.getPixel(i,j).g;
+			b =img.getPixel(i,j).b;
+
+
+			for(int a = 0; a < n; a++){	
+				for(int b = 0; b < n; b++){				
+					img_zoomed.setPixel(i * n + a, j * n + b, pixel(r, g, b));
 				}
 			}
-		}
+		}		
 	}
-	img = img_zoomed;
-	return;
 }
+
 
 
 void crop(ppm &img, unsigned char k, unsigned char t){
