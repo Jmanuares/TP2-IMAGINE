@@ -25,11 +25,12 @@ int main(int argc , char* argv[]){
 	}
 	
 	string filter = string(argv[1]); // funcion del filtro
-	unsigned int n = atoi(argv[2]); // threads
+	unsigned int threads = atoi(argv[2]); // threads
 	float p1 = atof(argv[3]); // variable
 	float p2 = atof(argv[4]); // segunda variable
 	string img1(argv[5]); // ruta a la img
 	string out = string(argv[6]); // ruta para guardar img (out)
+	
 	
 	ppm img(img1);
 	
@@ -43,10 +44,19 @@ int main(int argc , char* argv[]){
 		shades(img, (unsigned char)p1);
 	else if (filter == "brightness")
 		brightness(img, p1);
+	else if (filter == "brightnessT")
+		int FXthread = img.width/threads;
+		for(int i = 0; i < (threads); i++){
+			int strt = i * FXthread;
+			int finish = (i +1) * FXthread;
+			brightnessT(img, p1, strt, finish);
+		}
 	else if (filter == "contrast")
 		contrast(img, p1);
 	else if (filter == "edgeDetection")
 		edgeDetection(img, img);
+	else if (filter == "edgeDetectionT")
+		edgeDetectionT(img, img);
 	else if (filter == "zoom")
 		zoom(img, img, (unsigned char)p1);
 	else if (filter == "crop")
