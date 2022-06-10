@@ -72,24 +72,18 @@ void brightness(ppm& img, float brillo){
 }
 void brightnessT(ppm& img, float brillo, int start, int finish){
 	int r,g,b;
-	if (brillo >= 1 || brillo <= -1){
-		cout << "El brillo debe estar entre -1 y 1" << endl;
-	}else{
-		for(int i = start; i < finish; i++){	
-			for(int j = 0; j < img.width; j++){		
-				r = img.getPixel(i, j).r; 
-				g = img.getPixel(i, j).g; 
-				b = img.getPixel(i, j).b;
-				r = truncate(r + 255*brillo);
-				g = truncate(g + 255*brillo); 
-				b = truncate(b + 255*brillo);
+	for(int i = start; i < finish; i++){	
+		for(int j = 0; j < img.width; j++){		
+			r = img.getPixel(i, j).r; 
+			g = img.getPixel(i, j).g; 
+			b = img.getPixel(i, j).b;
+			r = truncate(r + 255*brillo);
+			g = truncate(g + 255*brillo); 
+			b = truncate(b + 255*brillo);
 
-				img.setPixel(i, j, pixel(r,g,b));
-			}
+			img.setPixel(i, j, pixel(r,g,b));
 		}
-	
-	}
-	
+	}	
 }
 
 void shades(ppm& img, unsigned char shades){

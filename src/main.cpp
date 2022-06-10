@@ -23,7 +23,7 @@ int main(int argc , char* argv[]){
 		cout << "Uso: ./main <filtro> <nthreads> <[p1]> <img1> <custom_output> <[p2]> <img2>" << endl;
 		return 0; 
 	}
-	
+	// Argumentos que hay que mandar a la hora de correr el programa
 	string filter = string(argv[1]); // funcion del filtro
 	unsigned int threads = atoi(argv[2]); // threads
 	float p1 = atof(argv[3]); // variable
@@ -44,19 +44,30 @@ int main(int argc , char* argv[]){
 		shades(img, (unsigned char)p1);
 	else if (filter == "brightness")
 		brightness(img, p1);
-	else if (filter == "brightnessT")
-		int FXthread = img.width/threads;
-		for(int i = 0; i < (threads); i++){
-			int strt = i * FXthread;
-			int finish = (i +1) * FXthread;
-			brightnessT(img, p1, strt, finish);
+	else if (filter == "brightnessT"){
+		if (p1 > 1 || p1 < -1){
+			cout << "El brillo debe estar entre -1 y 1" << endl;
+		}else{
+			int FXthread = img.width/threads;
+			for(int i = 0; i < (threads); i++){
+				int strt = i * FXthread;
+				int finish = (i +1) * FXthread;
+				brightnessT(img, p1, strt, finish);
+			}
 		}
+	}
 	else if (filter == "contrast")
 		contrast(img, p1);
 	else if (filter == "edgeDetection")
 		edgeDetection(img, img);
-	else if (filter == "edgeDetectionT")
-		edgeDetectionT(img, img);
+	else if (filter == "edgeDetectionT"){
+		int FXthread = img.width/threads;
+		for(int i = 0; i < (threads); i++){
+			int strt = i * FXthread;
+			int finish = (i +1) * FXthread;
+			edgeDetectionT(img, img, strt, finish);
+		}
+	}
 	else if (filter == "zoom")
 		zoom(img, img, (unsigned char)p1);
 	else if (filter == "crop")
