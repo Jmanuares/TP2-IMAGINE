@@ -180,10 +180,10 @@ void edgeDetection(ppm &img, ppm &img_target){
 	}
     img = img_target;
 }
-void edgeDetectionT(ppm &img, ppm &img_target){
+void edgeDetectionT(ppm &img, ppm &img_target, int start, int finish){
 	pixel p0,p1,p2,p3,p4,p5,p6,p7,p8,p9;
 	pixel p_final;
-	for (size_t i = 1; i < img.height - 1; i++)
+	for (size_t i = start; i < finish - 1; i++)
 	{
 		for (size_t j = 1; j < img.width - 1; j++)
 		{
