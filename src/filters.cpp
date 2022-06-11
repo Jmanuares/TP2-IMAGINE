@@ -52,50 +52,50 @@ void contrast(ppm& img, float contrast){
 
 void brightness(ppm& img, float brillo){
 	int r,g,b;
-	if (brillo >= 1 || brillo <= -1){
-		cout << "El brillo debe estar entre -1 y 1" << endl;
-	}else{
-		for(int i = 0; i < img.height; i++){
-			for(int j = 0; j < img.width; j++){		
-				r = img.getPixel(i, j).r; 
-				g = img.getPixel(i, j).g; 
-				b = img.getPixel(i, j).b;
-				r = truncate(r + 255*brillo);
-				g = truncate(g + 255*brillo); 
-				b = truncate(b + 255*brillo);
+	for(int i = 0; i < img.height; i++){
+		for(int j = 0; j < img.width; j++){		
+			r = img.getPixel(i, j).r; 
+			g = img.getPixel(i, j).g; 
+			b = img.getPixel(i, j).b;
+			r = truncate(r + 255*brillo);
+			g = truncate(g + 255*brillo); 
+			b = truncate(b + 255*brillo);
 
-				img.setPixel(i, j, pixel(r,g,b));
-			}
+			img.setPixel(i, j, pixel(r,g,b));
 		}
 	}
-	
 }
-void brightnessT(ppm& img, float brillo, unsigned int comienzoAltura, unsigned int finAltura){
-	pixel pixelUno;
-	try
-	{
-		if (brillo > 1 || brillo < -1)
-		{
-			throw "El brillo debe estar entre -1 y 1";
-		}
+//Filtro de brillo adaptado para threads
+void brightnessParaThreads(ppm& img, float brillo, int strt, int fin){
+	int r,g,b;
+	for(strt; strt < fin; strt++){
+		for(int j = 0; j < img.width; j++){		
+			r = img.getPixel(strt, j).r; 
+			g = img.getPixel(strt, j).g; 
+			b = img.getPixel(strt, j).b;
+			r = truncate(r + 255*brillo);
+			g = truncate(g + 255*brillo); 
+			b = truncate(b + 255*brillo);
 
-		for(unsigned int i = comienzoAltura; i < finAltura; i++)
-		{
-			for(unsigned int j = 0; j < img.width; j++)
-			{
-				pixelUno = img.getPixel(i, j);
-				pixelUno.add(255 * brillo);
-				img.setPixel(i,j, pixelUno.truncate());
-				
-			}
+			img.setPixel(strt, j, pixel(r,g,b));
 		}
 	}
-	catch(char error)
-	{
-		cout << error << endl;
-	}
-	
 }
+//Divide en threads para llamar a el filtro brillo
+void brightnessT(ppm& img, float brillo, int hilos){
+	int limites = int(img.height / hilos),strt,fin;
+	vector<thread> threads;
+	for (int i = 0; i < hilos; i++)
+	{
+		strt = i * limites;
+		fin = (i + 1) * limites;
+		threads.push_back(thread(brightnessParaThreads, ref(img), brillo,strt,fin));
+	}
+	for (int i = 0; i < hilos; i++){
+		threads[i].join();
+	}
+}
+
 
 void shades(ppm& img, unsigned char shades){
 	int r,g,b,ge,gris;
@@ -133,7 +133,7 @@ void zoom(ppm &img, int n){
 		}
 	
     img = img_zoomed;
-};
+}
 
 
 
@@ -186,23 +186,25 @@ void edgeDetection(ppm &img, ppm &img_target){
 	}
     img = img_target;
 }
-void edgeDetectionT(ppm &img, ppm &img_target, int start, int finish){
+
+
+void edgeDetectionParaThreadear(ppm &img, ppm &img_target, int strt, int fin){
 	pixel p0,p1,p2,p3,p4,p5,p6,p7,p8,p9;
 	pixel p_final;
-	for (size_t i = start; i < finish - 1; i++)
+	for (size_t strt = 1; strt < fin - 1; strt++)
 	{
 		for (size_t j = 1; j < img.width - 1; j++)
 		{
 			p_final = pixel();
-			p0 = img.getPixel(i - 1, j - 1);
-			p1 = img.getPixel(i - 1, j);
-			p2 = img.getPixel(i - 1, j + 1);
-			p3 = img.getPixel(i, j - 1);
-			p4 = img.getPixel(i, j);
-			p5 = img.getPixel(i, j + 1);
-			p6 = img.getPixel(i + 1, j - 1);
-			p7 = img.getPixel(i + 1, j);
-			p8 = img.getPixel(i + 1, j + 1);
+			p0 = img.getPixel(strt - 1, j - 1);
+			p1 = img.getPixel(strt - 1, j);
+			p2 = img.getPixel(strt - 1, j + 1);
+			p3 = img.getPixel(strt, j - 1);
+			p4 = img.getPixel(strt, j);
+			p5 = img.getPixel(strt, j + 1);
+			p6 = img.getPixel(strt + 1, j - 1);
+			p7 = img.getPixel(strt + 1, j);
+			p8 = img.getPixel(strt + 1, j + 1);
 
 			unsigned int gxr = (p0.r - p2.r + 2 * p3.r - 2 * p5.r + p6.r - p8.r);
 			unsigned int gyr = (p0.r + 2 * p1.r + p2.r - p6.r - 2 * p7.r - p8.r);
@@ -217,8 +219,23 @@ void edgeDetectionT(ppm &img, ppm &img_target, int start, int finish){
 			p_final.b = sqrt(gxb * gxb + gyb * gyb);
 
 			p_final.truncate();
-			img_target.setPixel(i - 1, j - 1, p_final);
+			img_target.setPixel(strt - 1, j - 1, p_final);
 		}
 	}
     img = img_target;
+}
+
+
+void edgeDetectionT(ppm &img, ppm &img_target, int hilos){
+	int limites = int(img.height / hilos),strt,fin;
+	vector<thread> threads;
+	for (int i = 0; i < hilos; i++)
+	{
+		strt = i * limites;
+		fin = (i + 1) * limites;
+		threads.push_back(thread(edgeDetectionParaThreadear, ref(img),ref(img_target), strt, fin));
+	}
+	for (int i = 0; i < hilos; i++){
+		threads[i].join();
+	}
 }

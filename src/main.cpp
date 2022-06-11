@@ -42,32 +42,27 @@ int main(int argc , char* argv[]){
 		plain(img, (unsigned char)p1);
 	else if (filter == "shades")
 		shades(img, (unsigned char)p1);
-	else if (filter == "brightness")
-		brightness(img, p1);
-	else if (filter == "brightnessT"){
+	else if (filter == "brightness"){
 		if (p1 > 1 || p1 < -1){
 			cout << "El brillo debe estar entre -1 y 1" << endl;
 		}else{
-			int FXthread = img.width/threads;
-			for(int i = 0; i < (threads); i++){
-				int strt = i * FXthread;
-				int finish = (i +1) * FXthread;
-				brightnessT(img, p1, strt, finish);
+			if(threads==1){
+				brightness(img, p1);
+			}else{
+				brightnessT(img, p1,threads);
 			}
 		}
 	}
 	else if (filter == "contrast")
 		contrast(img, p1);
-	else if (filter == "edgeDetection")
-		edgeDetection(img, img);
-	else if (filter == "edgeDetectionT"){
-		int FXthread = img.width/threads;
-		for(int i = 0; i < (threads); i++){
-			int strt = i * (FXthread-10);
-			int finish = (i +1) * (FXthread-10);
-			edgeDetectionT(img, img, strt, finish);
+	else if (filter == "edgeDetection"){
+		if(threads==1){
+			edgeDetection(img, img);
+		}else{
+			edgeDetectionT(img, img, threads);
 		}
 	}
+
 	else if (filter == "zoom")
 		zoom(img, (unsigned char)p1);
 	else if (filter == "crop")
