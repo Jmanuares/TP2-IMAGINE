@@ -117,7 +117,7 @@ void shades(ppm& img, unsigned char shades){
 
 
 void zoom(ppm &img, int n){
-	ppm imagenNueva(img.width * n, img.height * n);
+	ppm img_zoomed(img.width * n, img.height * n);
 	unsigned int posicionX,posicionY;
 	for (int i = 0; i < img.height; i++)
 		for (int j = 0; j < img.width; j++){
@@ -128,11 +128,11 @@ void zoom(ppm &img, int n){
 
 			for (int a = 0; a < n; a++)
 				for (int b = 0; b < n; b++){
-					imagenNueva.setPixel(posicionY + a, posicionX + b, p);
+					img_zoomed.setPixel(posicionY + a, posicionX + b, p);
 				}
 		}
 	
-    img = imagenNueva;
+    img = img_zoomed;
 };
 
 
