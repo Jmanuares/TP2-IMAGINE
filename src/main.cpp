@@ -63,13 +63,13 @@ int main(int argc , char* argv[]){
 	else if (filter == "edgeDetectionT"){
 		int FXthread = img.width/threads;
 		for(int i = 0; i < (threads); i++){
-			int strt = i * FXthread;
-			int finish = (i +1) * FXthread;
+			int strt = i * (FXthread-10);
+			int finish = (i +1) * (FXthread-10);
 			edgeDetectionT(img, img, strt, finish);
 		}
 	}
 	else if (filter == "zoom")
-		zoom(img, img, (unsigned char)p1);
+		zoom(img, (unsigned char)p1);
 	else if (filter == "crop")
 		crop(img, (unsigned char)p1,(unsigned char)p2);
 	else

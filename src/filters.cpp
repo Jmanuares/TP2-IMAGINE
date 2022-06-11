@@ -70,20 +70,31 @@ void brightness(ppm& img, float brillo){
 	}
 	
 }
-void brightnessT(ppm& img, float brillo, int start, int finish){
-	int r,g,b;
-	for(int i = start; i < finish; i++){	
-		for(int j = 0; j < img.width; j++){		
-			r = img.getPixel(i, j).r; 
-			g = img.getPixel(i, j).g; 
-			b = img.getPixel(i, j).b;
-			r = truncate(r + 255*brillo);
-			g = truncate(g + 255*brillo); 
-			b = truncate(b + 255*brillo);
-
-			img.setPixel(i, j, pixel(r,g,b));
+void brightnessT(ppm& img, float brillo, unsigned int comienzoAltura, unsigned int finAltura){
+	pixel pixelUno;
+	try
+	{
+		if (brillo > 1 || brillo < -1)
+		{
+			throw "El brillo debe estar entre -1 y 1";
 		}
-	}	
+
+		for(unsigned int i = comienzoAltura; i < finAltura; i++)
+		{
+			for(unsigned int j = 0; j < img.width; j++)
+			{
+				pixelUno = img.getPixel(i, j);
+				pixelUno.add(255 * brillo);
+				img.setPixel(i,j, pixelUno.truncate());
+				
+			}
+		}
+	}
+	catch(char error)
+	{
+		cout << error << endl;
+	}
+	
 }
 
 void shades(ppm& img, unsigned char shades){
@@ -105,23 +116,24 @@ void shades(ppm& img, unsigned char shades){
 
 
 
-void zoom(ppm &img, ppm &img_zoomed, int n){
-	int r,g,b;
-	for(int i = 0; i < img.height / n; i++){
-		for(int j = 0; j < img.width / n; j++){	
-			r =img.getPixel(i,j).r;
-			g =img.getPixel(i,j).g;
-			b =img.getPixel(i,j).b;
+void zoom(ppm &img, int n){
+	ppm imagenNueva(img.width * n, img.height * n);
+	unsigned int posicionX,posicionY;
+	for (int i = 0; i < img.height; i++)
+		for (int j = 0; j < img.width; j++){
+			pixel p = img.getPixel(i, j);
 
+			posicionX = (j + (j * (n - 1)));
+			posicionY = (i + (i * (n - 1)));
 
-			for(int a = 0; a < n; a++){	
-				for(int b = 0; b < n; b++){				
-					img_zoomed.setPixel(i * n + a, j * n + b, pixel(r, g, b));
+			for (int a = 0; a < n; a++)
+				for (int b = 0; b < n; b++){
+					imagenNueva.setPixel(posicionY + a, posicionX + b, p);
 				}
-			}
-		}		
-	}
-}
+		}
+	
+    img = imagenNueva;
+};
 
 
 
