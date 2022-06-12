@@ -95,11 +95,20 @@ bool estaOrdenado(const vector<int>& v){
 // archivo de texto instancia de ofstream (que hereda de ostream).
 // En cualquier caso puedo usar el operador << para escribir.
 
-void mostrarVector(const vector<int>& v, ostream& out)
-{
-	// COMPLETAR
+void mostrarVector(const vector<int>& v, ostream& out){
+	string str = "";
+	
+	for (int i : v){
+		str.append(to_string(i));
+		str.append(", ");
+	}
+	str = str.substr(0, str.length() - 2);
+
+	out << str << endl;
+
 	return;
 }
+
 
 // Ejercicio 6 
 // Dado un vector de enteros y el nombre de un archivo de salida,
@@ -109,20 +118,25 @@ void mostrarVector(const vector<int>& v, ostream& out)
 // Es importante hacer la conversion del string a char* usando c_str().
 // HINT: Reutilizar la función anterior!
 
-void guardarVector(const vector<int>& v, string nombreArchivo)
-{
-	// Abro un archivo con el nombre dado por parámetros (c_str() convierte 
-	// string a un "string" de C)
-   ofstream file(nombreArchivo.c_str()); 
-   if(file.is_open())
-   {
-   		//Escribir en el archivo todo el vector (HINT: Ver función anterior)
-   		// COMPLETAR
+void guardarVector(const vector<int>& v, string nombreArchivo){
+	string str = "";
+	
+	for (int i : v)
+	{
+		str.append(to_string(i));
+		str.append(", ");
+	}
 
-   		// Cerar archivo	
-   		// COMPLETAR
-   }
-   return;
+	str = str.substr(0, str.length() - 2);
+
+   	ofstream file(nombreArchivo.c_str()); 
+   	if(file.is_open())
+   	{
+		file << str;   	
+		file.close();
+		
+   	}
+   	return;
 }
 
 
@@ -131,27 +145,39 @@ void guardarVector(const vector<int>& v, string nombreArchivo)
 // apariciones de cada uno y escribir nombreArchivoOut con una linea por cada
 // numero encontrado, un espacio y la cantidad de apariciones.
 // El parametro max indica el número más grande que puede aparecer en el archivo
-// Ejemplo: si el 1 aparece 44 veces y el 2 20 veces (y no hay otros numeros)
+// Ejemplo: si el 1 aparece 44 veces y el 2 20 veces (y no hay otros nums)
 // en la salida deberia haber dos lineas, "1 44" y la segunda "2 20"
 
-void cantidadApariciones(string nombreArchivo, string nombreArchivoOut,int max)
-{
-	// Abro archivo para lectura
+void cantidadApariciones(string nombreArchivo, string nombreArchivoOut,int max){
 	ifstream fileIn(nombreArchivo.c_str());
+	string line;
+	vector<int> nums(10, 0);
+	while (getline(fileIn, line)) {
 
-	// Abro archivo para escriture
+		for (int ch2 = 0; ch2 < max; ch2++){
+			size_t count = 0;
+
+			for (char i : line){
+				std::string tmp = std::to_string(ch2);
+    			char const *ch = tmp.c_str();
+				if (i == *ch){
+					count++;
+				}
+			}
+			nums[ch2] = nums[ch2] + count;
+			
+		}
+    }
     ofstream fileOut(nombreArchivoOut.c_str());
+	for(int i = 0; i< nums.size();i++){
+		if (nums[i] != 0){
+			fileOut << i;
+			fileOut << " ";
+			fileOut << nums[i];
+			fileOut<< "\n";
+		}
+	}
 
-    // COMPLETAR
-    
-	return;    
-}
+	return;
+} 
 
-
-//Ejercicio 8 (opcional)
-//Dado el nombre de archivo, lo filtra y devuelve los palindromos en el archivo
-//  salida, uno por linea.
-void palindromos(string nombreArchivo, string nombreArchivoOut)
-{
-	return;	
-}
