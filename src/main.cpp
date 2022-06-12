@@ -78,7 +78,11 @@ int main(int argc , char* argv[]){
 
 	cout << "Escribiendo imagen" << endl;
 	img.write(out);	
-	    
+	file.open("../test/resultados.csv", ios::app);
+	string outPrueba = to_string(imagen1.width) + "," + to_string(accum) + "," + to_string(threads) + "\n";
 	cout << "Listo" << endl;
+	file << outPrueba;
+	file.close();
+
 	return 0;
 }
