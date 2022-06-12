@@ -190,8 +190,7 @@ void edgeDetection(ppm &img, ppm &img_target){
 
 
 void edgeDetectionParaThreadear(ppm img, ppm *img_target, int strt, int fin){
-	for (size_t i = strt + 1; i < fin - 1; i++)
-	{
+	for (size_t i = strt + 1; i < fin - 1; i++){
 		for (size_t j = 1; j < img.width - 1; j++)
 		{
 			pixel p_final = pixel();
