@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
     "files.associations": {
         "xstring": "cpp",
@@ -6,4 +7,10 @@
         "string": "cpp",
         "ostream": "cpp"
     }
+=======
+{
+    "files.associations": {
+        "xstring": "cpp"
+    }
+>>>>>>> be53a9f9f0f4d45ad9390e16b4212284da0f908a
 }
