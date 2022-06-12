@@ -41,7 +41,6 @@ int main(int argc , char* argv[]){
 	cout << "Aplicando filtros"<< endl;
 	struct timespec start, stop;    	
 	clock_gettime(CLOCK_REALTIME, &start);
-
 	if (filter == "plain")
 		plain(img, (unsigned char)p1);
 	else if (filter == "shades")
@@ -67,27 +66,24 @@ int main(int argc , char* argv[]){
 			edgeDetectionT(img, img_target, threads);
 		}
 	}
-
 	else if (filter == "zoom")
 		zoom(img, (unsigned char)p1);
 	else if (filter == "crop")
 		crop(img, (unsigned char)p1,(unsigned char)p2);
 	else
 		cout << "No se selecciono filtro" << endl;
-	
    	clock_gettime(CLOCK_REALTIME, &stop);
 
 	double accum;
 	accum = ( stop.tv_sec - start.tv_sec ) + ( stop.tv_nsec - start.tv_nsec ) * ONE_OVER_BILLION;
 	printf("%lf s\n", accum);
-
 	cout << "Escribiendo imagen" << endl;
 	img.write(out);	
+	ofstream file;
 	file.open("../test/resultados.csv", ios::app);
-	string outPrueba = to_string(imagen1.width) + "," + to_string(accum) + "," + to_string(threads) + "\n";
-	cout << "Listo" << endl;
+	string outPrueba = to_string(img.width) + "," + to_string(accum) + "," + to_string(threads) + "\n";
 	file << outPrueba;
+	cout << "Listo" << endl;
 	file.close();
-
 	return 0;
 }
