@@ -153,6 +153,7 @@ void crop(ppm &img, unsigned char k, unsigned char t){
 void edgeDetection(ppm &img, ppm &img_target){
 	pixel p0,p1,p2,p3,p4,p5,p6,p7,p8,p9;
 	pixel p_final;
+	
 	for (size_t i = 1; i < img.height - 1; i++)
 	{
 		for (size_t j = 1; j < img.width - 1; j++)
@@ -188,54 +189,59 @@ void edgeDetection(ppm &img, ppm &img_target){
 }
 
 
-void edgeDetectionParaThreadear(ppm &img, ppm &img_target, int strt, int fin){
-	pixel p0,p1,p2,p3,p4,p5,p6,p7,p8,p9;
-	pixel p_final;
-	for (size_t strt = 1; strt < fin - 1; strt++)
+void edgeDetectionParaThreadear(ppm img, ppm *img_target, int strt, int fin){
+	for (size_t i = strt + 1; i < fin - 1; i++)
 	{
 		for (size_t j = 1; j < img.width - 1; j++)
 		{
-			p_final = pixel();
-			p0 = img.getPixel(strt - 1, j - 1);
-			p1 = img.getPixel(strt - 1, j);
-			p2 = img.getPixel(strt - 1, j + 1);
-			p3 = img.getPixel(strt, j - 1);
-			p4 = img.getPixel(strt, j);
-			p5 = img.getPixel(strt, j + 1);
-			p6 = img.getPixel(strt + 1, j - 1);
-			p7 = img.getPixel(strt + 1, j);
-			p8 = img.getPixel(strt + 1, j + 1);
-
+			pixel p_final = pixel();
+			// movy, movx
+			// ppmMutex.lock();			
+			pixel p0 = img.getPixel(i - 1, j - 1);
+			pixel p1 = img.getPixel(i - 1, j);
+			pixel p2 = img.getPixel(i - 1, j + 1);
+			pixel p3 = img.getPixel(i, j - 1);
+			pixel p4 = img.getPixel(i, j);
+			pixel p5 = img.getPixel(i, j + 1);
+			pixel p6 = img.getPixel(i + 1, j - 1);
+			pixel p7 = img.getPixel(i + 1, j);
+			pixel p8 = img.getPixel(i + 1, j + 1);
+			// ppmMutex.unlock();
+			//p_final.r = (p0.r + p1.r + p2.r + p3.r + p4.r + p5.r + p6.r + p7.r + p8.r) / 9;
+			//p_final.g = (p0.g + p1.g + p2.g + p3.g + p4.g + p5.g + p6.g + p7.g + p8.g) / 9;
+			//p_final.b = (p0.b + p1.b + p2.b + p3.b + p4.b + p5.b + p6.b + p7.b + p8.b) / 9;
 			unsigned int gxr = (p0.r - p2.r + 2 * p3.r - 2 * p5.r + p6.r - p8.r);
 			unsigned int gyr = (p0.r + 2 * p1.r + p2.r - p6.r - 2 * p7.r - p8.r);
 			p_final.r = sqrt(gxr * gxr + gyr * gyr);
-			
 			unsigned int gxg = (p0.g - p2.g + 2 * p3.g - 2 * p5.g + p6.g - p8.g);
 			unsigned int gyg = (p0.g + 2 * p1.g + p2.g - p6.g - 2 * p7.g - p8.g);
 			p_final.g = sqrt(gxg * gxg + gyg * gyg);
-
 			unsigned int gxb = (p0.b - p2.b + 2 * p3.b - 2 * p5.b + p6.b - p8.b);
 			unsigned int gyb = (p0.b + 2 * p1.b + p2.b - p6.b - 2 * p7.b - p8.b);
 			p_final.b = sqrt(gxb * gxb + gyb * gyb);
-
 			p_final.truncate();
-			img_target.setPixel(strt - 1, j - 1, p_final);
+			// ppmMutex.lock();
+			img_target->setPixel(i - 1, j - 1, p_final);
+			// ppmMutex.unlock();
 		}
 	}
-    img = img_target;
 }
-
 
 void edgeDetectionT(ppm &img, ppm &img_target, int hilos){
 	int limites = int(img.height / hilos),strt,fin;
+	int offset = (img.height) - (limites * hilos);
 	vector<thread> threads;
 	for (int i = 0; i < hilos; i++)
 	{
 		strt = i * limites;
 		fin = (i + 1) * limites;
-		threads.push_back(thread(edgeDetectionParaThreadear, ref(img),ref(img_target), strt, fin));
+		if (i == hilos - 1) {
+			fin += offset;
+		}
+		threads.push_back(thread(edgeDetectionParaThreadear, img, &img_target, strt, fin));
 	}
 	for (int i = 0; i < hilos; i++){
 		threads[i].join();
 	}
+	img = img_target;
 }
