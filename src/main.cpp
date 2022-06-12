@@ -23,6 +23,10 @@ int main(int argc , char* argv[]){
 		cout << "Uso: ./main <filtro> <nthreads> <[p1]> <img1> <custom_output> <[p2]> <img2>" << endl;
 		return 0; 
 	}
+	else if(string(argv[1]) == "-filtros"){
+		cout << """Los filtros que se pueden usar son plain, shades, brightness, contrast, edgeDetection, zoom, crop""" << endl;
+		return 0; 
+	}
 	// Argumentos que hay que mandar a la hora de correr el programa
 	string filter = string(argv[1]); // funcion del filtro
 	unsigned int threads = atoi(argv[2]); // threads
@@ -56,10 +60,11 @@ int main(int argc , char* argv[]){
 	else if (filter == "contrast")
 		contrast(img, p1);
 	else if (filter == "edgeDetection"){
+		ppm img_target(img.width - 1, img.height - 1);
 		if(threads==1){
-			edgeDetection(img, img);
+			edgeDetection(img, img_target);
 		}else{
-			edgeDetectionT(img, img, threads);
+			edgeDetectionT(img, img_target, threads);
 		}
 	}
 
