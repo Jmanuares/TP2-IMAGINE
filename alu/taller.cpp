@@ -59,14 +59,31 @@ vector<int> rotar(const vector<int>& v, int k){
 // sus elementos. RECORDAR determinar la cabecera de la funcion y definir
 // la misma en  taller.h !!
 
-// COMPLETAR
+void sumar(vector<int>& v){
+	for (int i : v){
+		v[i] = v[i] + 1;
+	}
+}
 
 // Ejercicio 4
 // Dado un vector, dice si esta ordenado crecientemente o decrecientemente
-bool estaOrdenado(const vector<int>& v)
-{
-	// COMPLETAR
-	return true;
+bool estaOrdenado(const vector<int>& v){
+	int aux = 0;
+	bool aux;
+
+	for(int i = 0; i < v.size(); i++){
+		aux = v[i];
+		for (int j = i+1; j < v.size(); j++){
+			if (aux >= v[j]){
+				return false;
+			}
+			else{
+				aux = true;
+			}	
+		}
+	}	
+	if (aux == true)return true;
+	return false;
 }
 
 // Ejercicio 5
