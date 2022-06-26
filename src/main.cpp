@@ -53,6 +53,7 @@ int main(int argc , char* argv[]){
 			if(threads==1){
 				brightness(img, p1);
 			}else{
+				cout << "multi" << endl;
 				brightnessT(img, p1,threads);
 			}
 		}
@@ -83,11 +84,12 @@ int main(int argc , char* argv[]){
 
 	cout << "Escribiendo imagen" << endl;
 	img.write(out);	
+	ofstream file;
 	file.open("../test/resultados.csv", ios::app);
-	string outPrueba = to_string(imagen1.width) + "," + to_string(accum) + "," + to_string(threads) + "\n";
+	string outPrueba = to_string(img.width) + "," + to_string(accum) + "," + to_string(threads) + "\n";
 	cout << "Listo" << endl;
 	file << outPrueba;
 	file.close();
-
+	cout << outPrueba << endl;
 	return 0;
 }
