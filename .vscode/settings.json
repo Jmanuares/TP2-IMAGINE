@@ -10,7 +10,15 @@
 =======
 {
     "files.associations": {
+<<<<<<< HEAD
+        "xstring": "cpp",
+        "fstream": "cpp",
+        "xiosbase": "cpp",
+        "string": "cpp",
+        "ostream": "cpp"
+=======
         "xstring": "cpp"
+>>>>>>> 11a02681f7f30fd0d99b2f0a4ac1c150e8c2d787
     }
 >>>>>>> be53a9f9f0f4d45ad9390e16b4212284da0f908a
 }
